@@ -1,6 +1,194 @@
+:root{
+    --btn-color: #0b7bd0;
+    --body--color: #e9ecf3;
+    --text-color: #fff;
+}
+
 * {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
     outline: none;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--body--color);
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    height: 110px;
+}
+
+.header img {
+    width: 100px;
+    height: 100px;
+}
+
+button.bottons-page {
+    color: var(--text-color);
+    background-color: var(--btn-color);
+    border: none;
+    width: 120px;
+    height: 35px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0;
+}
+
+.container .column {
+    width: 350px;
+    height: 600px;
+    background-color: var(--text-color);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.container .column .column-header {
+    background-color: var(--btn-color);
+    color: var(--text-color);
+    padding: 15px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .column .column-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.container .column .column-body .card{
+    background-color: #eee;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container .column .column-body .card .info{
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    flex-direction: column;   
+}
+
+.column-header {
+    font-size: 18px;
+}
+
+.btn-header-column button {
+    border: none;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.btn-header-column button #edit-column-title, #add-tarefa, #delete-column {
+    width: 20px;
+    height: 20px;
+}
+
+#modal{ 
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; 
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal .box {
+    background-color: #EEE;
+    width: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+}   
+
+#modal .box .box-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 17px 20px;
+    border-bottom: 1px solid #DDD;
+}
+
+#modal .box .box-header span {
+    font-size: 18px;
+    font-weight: 700 bold;
+    color: #333;
+}
+
+#modal .box .box-header button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #333;
+}
+
+#modal .box .box-header button #btn-close {
+    width: 25px;
+    height: 25px;
+}
+
+#modal .box .form{
+    padding: 20px;
+}
+
+#modal .box .form .form-group {
+    margin-bottom: 15px;
+}
+
+#modal .box .form label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+#modal .box .form textarea, 
+#modal .box .form select,
+#modal .box .form input {
+    width: 100%;
+    font-size: 14px;
+    border-radius: 8px;
+    color: #333;
+    border: 1px solid #999;
+}
+
+#modal .box .form textarea {
+    padding: 10px 15px;
+}
+
+#modal .box .form select {
+    padding: 10px; 
+}
+
+#modal .box .form input {
+    padding: 10px;
+}
+
+#modal .box .form button {
+    display: block;
+    margin-left: auto;
+    margin-top: 15px;
 }

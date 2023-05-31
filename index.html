@@ -11,10 +11,180 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Script externo dos icones -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
+
+    <!-- Script da momentJs para formatar as datas-->
+    <script src="/moment.mim.js" defer></script>
+
+    <!-- Script principal -->
+    <script src="script.js" defer></script>
     
 </head>
 
 <body>
-    <h1>Olá mundo </h1>
+
+    <!-- Cabeçalho -->
+    <div class="header">
+        <img src="/Imagens/logo-front.png" alt="LogoTipo Empresa">
+        <h1>Quadro Kanban</h1>
+        <button class="bottons-page">Nova coluna</button>
+    </div>
+
+    <!-- Colunas -->
+    <div class="container">
+
+        <!-- Coluna 1-->
+        <div class="column" id="todoColumn">
+
+            <!-- Cabeçalho das colunas -->
+            <div class="column-header">
+                <span>A fazer</span>
+                <div class="btn-header-column">
+                    <button>
+                        <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                    </button>
+                    <button onclick="openModal()">
+                        <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                    </button>
+                    <button>
+                        <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Corpo das colunas -->
+            <div class="column-body">
+
+            </div>
+        </div>
+
+        <!-- Coluna 2-->
+        <div class="column">
+
+            <!-- Cabeçalho das colunas -->
+            <div class="column-header">
+                <span>Em progresso</span>
+                <div class="btn-header-column">
+                    <button>
+                        <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                    </button>
+                    <button onclick="openModal()">
+                        <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                    </button>
+                    <button>
+                        <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
+                
+            <!-- Corpo das colunas -->
+            <div class="column-body">
+    
+            </div>
+        </div>
+
+        <!-- Coluna 3-->
+        <div class="column">
+
+            <!-- Cabeçalho das colunas -->
+            <div class="column-header">
+                <span>Analise</span>
+                <div class="btn-header-column">
+                    <button>
+                        <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                    </button>
+                    <button onclick="openModal()">
+                        <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                    </button>
+                    <button>
+                        <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
+                
+            <!-- Corpo das colunas -->
+            <div class="column-body">
+    
+            </div>
+        </div>
+
+        <!-- Coluna 4-->
+        <div class="column">
+
+            <!-- Cabeçalho das colunas -->
+            <div class="column-header">
+                <span>Concluido</span>
+                <div class="btn-header-column">
+                    <button>
+                        <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                    </button>
+                    <button onclick="openModal()">
+                        <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                    </button>
+                    <button>
+                        <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
+                
+            <!-- Corpo das colunas -->
+            <div class="column-body">
+    
+            </div>
+        </div>
+    </div>
+
+    <div id="modal">
+        <div class="box">
+            <div class="box-header">
+                <span id="modeCreation">Adicionar nova tarefa</span>
+                <span id="modeEdition">Editar tarefa</span>
+                <button onclick="closeModal()">
+                    <ion-icon id="btn-close"name="close-outline"></ion-icon>
+                </button>
+            </div>
+
+            <div class="form">
+                <input type="hidden" id="idInput">
+
+                <div class="form-group">
+                    <label for="description">Descrição:</label>
+                    <textarea id="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Prioridade:</label>
+                    <select id="priority">
+                        <option>Baixa</option>
+                        <option>Média</option>
+                        <option>Alta</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact">Selecione um contato:</label>
+                    <select id="contact">
+                        <option>Contato 1</option>
+                        <option>Contato 2</option>
+                        <option>Contato 3</option>
+                        <option>Contato 4</option>
+                    </select>
+                </div>
+
+                <div class="from-group">
+                    <label for="dateline">Prazo:</label>
+                    <input type="date" id="dateline">
+                </div>
+
+                <button class="bottons-page" onclick="createTask()" id="modeEditionBtn">Adiconar tarefa</button>
+                <button class="bottons-page" onclick="updateTask()" id="modeCreationBtn">Salvar alterações</button>
+
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
