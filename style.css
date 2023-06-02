@@ -66,6 +66,7 @@ button.bottons-page {
     background-color: var(--text-color);
     border-radius: 10px;
     overflow: hidden;
+    position: relative;
 }
 
 .container .column .column-header {
@@ -81,6 +82,17 @@ button.bottons-page {
     flex-direction: column;
     gap: 15px;
     padding: 20px;
+    max-height: 90%;
+    overflow: auto;
+}
+
+.container .column .column-body::-webkit-scrollbar{
+    width: 6px;
+    height: 6px;
+}
+
+.container .column .column-body::-webkit-scrollbar-thumb {
+    background-color: #d3d1d1;
 }
 
 .container .column .column-body .card{

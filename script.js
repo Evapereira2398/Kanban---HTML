@@ -40,7 +40,9 @@ function openModal(id) {
     $priorityInput.value = task.priority;
     $contactInput.value = task.contact;
     $datelineInput.value = task.dateline;
+
   } else {
+
     $modeCreation.style.display = 'block';
     $modeCreationBtn.style.display = 'block';
 
@@ -182,8 +184,11 @@ function addEditColumnNameEvent(column) {
     const input = document.createElement('input');
     input.value = columnName.textContent;
     input.classList.add('edit-input');
-    input.style.background = 'transparent';
-    input.style.borderBottom = '1px solid white';
+    input.style.background = '#FFF';
+    input.style.border = 'none'
+    
+    input.style.boxshadow = 'inset 2px 5px 10px rgba(0,0,0,0.3)'
+    
   
       input.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
