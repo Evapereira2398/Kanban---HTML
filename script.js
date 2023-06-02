@@ -13,6 +13,11 @@ const $modeCreationBtn = document.getElementById('modeCreationBtn');
 
 var todoList = [];
 
+//Função para recarregar a pagina quando for clicado na logo
+function reload(){
+    window.location.reload; 
+}
+
 // Função para adicionar abrir a caixa da nova tarefa
 function openModal(id, columnId) {
   $modal.style.display = 'flex';
@@ -151,48 +156,57 @@ function updateTask() {
 
 // Função para adicionar uma nova coluna
 function addNewColumn() {
-  const container = document.querySelector('.container');
-  const rows = document.querySelectorAll('.row');
-  let currentRow = rows[rows.length - 1]; // Última linha atual
-
-  if (!currentRow || currentRow.childElementCount === 4) {
-    // Se não houver nenhuma linha atual ou se a linha atual já tiver 4 colunas
-    const newRow = document.createElement('div');
-    newRow.classList.add('row');
-    container.appendChild(newRow);
-    currentRow = newRow; // Atualiza a referência para a nova linha
-  }
-
-  const newColumnId = Date.now(); // Gerar ID único para a nova coluna
-
-  const newColumn = document.createElement('div');
-  newColumn.classList.add('column');
-  newColumn.id = `column-${newColumnId}`; // Definir o ID da coluna
-  newColumn.innerHTML = `
-    <div class="column-header">
-      <span>Nova Coluna</span>
-      <div class="btn-header-column">
-        <button>
-          <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
-        </button>
-        <button onclick="openModal(null, ${newColumnId})">
-          <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
-        </button>
-        <button>
-          <ion-icon id="delete-column" name="trash-outline"></ion-icon>
-        </button>
+    const container = document.querySelector('.container');
+    const rows = document.querySelectorAll('.row');
+    let currentRow = rows[rows.length - 1]; // Última linha atual
+  
+    if (!currentRow || currentRow.childElementCount === 4) {
+      // Se não houver nenhuma linha atual ou se a linha atual já tiver 4 colunas
+      const newRow = document.createElement('div');
+      newRow.classList.add('row');
+      container.appendChild(newRow);
+      currentRow = newRow; // Atualiza a referência para a nova linha
+    }
+  
+    const newColumnId = Date.now(); // Gerar ID único para a nova coluna
+  
+    const newColumn = document.createElement('div');
+    newColumn.classList.add('column');
+    newColumn.id = `column-${newColumnId}`; // Definir o ID da coluna
+    newColumn.innerHTML = `
+      <div class="column-header">
+        <span>Nova Coluna</span>
+        <div class="btn-header-column">
+          <button>
+            <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+          </button>
+          <button onclick="openModal(null, ${newColumnId})">
+            <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+          </button>
+          <button>
+            <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+          </button>
+        </div>
       </div>
-    </div>
-
-    <!-- Corpo das colunas -->
-    <div class="column-body"></div>
-  `;
-
-  currentRow.insertBefore(newColumn, currentRow.firstChild); // Insere a nova coluna no começo da linha
-
-  addColumnEvents(newColumn); // Adiciona os eventos à nova coluna
-  generateCards(newColumnId); // Atualiza os cards exibidos
-}
+  
+      <!-- Corpo das colunas -->
+      <div class="column-body"></div>
+    `;
+  
+    currentRow.appendChild(newColumn); // Insere a nova coluna no final da linha
+  
+    addColumnEvents(newColumn); // Adiciona os eventos à nova coluna
+    generateCards(newColumnId); // Atualiza os cards exibidos
+  
+    const content = document.querySelector('.content');
+    const columns = document.querySelectorAll('.column');
+  
+    // Após adicionar a coluna, verifica se a classe "content" está vazia para remover a imagem e o texto
+    if (columns.length === 1 && content.innerHTML.trim() !== '') {
+      // Se houver apenas uma coluna e a classe "content" não estiver vazia, remove a imagem e o texto
+      content.innerHTML = '';
+    }
+  }
 
 // Função para adicionar o evento de exclusão às colunas
 function addEditColumnNameEvent(column) {

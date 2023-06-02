@@ -1,6 +1,6 @@
 :root{
     --btn-color: #0b7bd0;
-    --body--color: #e9ecf3;
+    --body--color: #c7d3dd;
     --text-color: #fff;
 }
 
@@ -13,9 +13,7 @@
 }
 
 body {
-    background: linear-gradient(318deg, rgba(63,94,251,1) 0%, rgba(98,123,252,1) 26%, rgba(175,160,253,1) 49%, rgba(255,255,255,1) 97%);
-    background-repeat: no-repeat;
-    height: 100vh;
+    background-color: var(--body--color);
 }
 
 body::-webkit-scrollbar{
@@ -41,6 +39,10 @@ body::-webkit-scrollbar-thumb {
     height: 100px;
 }
 
+.header h1 {
+    color: var(--text-color);
+}
+
 button.bottons-page {
     color: var(--text-color);
     background-color: var(--btn-color);
@@ -55,14 +57,13 @@ button.bottons-page {
 .row {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
+    gap: 20px;
     justify-content: center;
     align-items: center;    
     padding: 20px 0;
 }
 
 .container .row .content img {
-    display: block;
     width: 800px;
     height: auto;
     padding: 10px;
@@ -71,7 +72,7 @@ button.bottons-page {
 .container .row .content h1, h2 {
     text-align: center;
     padding: 15px;
-    color: #fff;
+    color: var(--text-color);
     font-size: 28px;
 }
 
