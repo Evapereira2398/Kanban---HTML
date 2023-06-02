@@ -13,126 +13,213 @@ const $modeCreation = document.getElementById('modeCreation');
 const $modeEditionBtn = document.getElementById('modeEditionBtn');
 const $modeCreationBtn = document.getElementById('modeCreationBtn');
 
-
 var todoList = [];
 
 // Função para adicionar abrir a caixa da nova tarefa
-function openModal (id) {
-    $modal.style.display = "flex";
-    
-    // Condição para identificar se a caixa está recendo um ID...
-    // Se estiver significa que o usuario irá editar a task
-    // Senão estiver recendo o ID é porque está sendo criada uma nova Task
+function openModal(id) {
+  $modal.style.display = 'flex';
 
-    if(id) {
+  // Condição para identificar se a caixa está recebendo um ID...
+  // Se estiver, significa que o usuário irá editar a tarefa
+  // Senão estiver recebendo o ID é porque está sendo criada uma nova tarefa
+  if (id) {
+    $modeCreation.style.display = 'none';
+    $modeCreationBtn.style.display = 'none';
 
-        $modeCreation.style.display = "none";
-        $modeCreationBtn.style.display = "none";
+    $modeEdition.style.display = 'block';
+    $modeEditionBtn.style.display = 'block';
 
-        $modeEdition.style.display = 'block';
-        $modeEditionBtn.style.display = 'block';
+    const index = todoList.findIndex(function (task) {
+      return task.id == id;
+    });
 
+    const task = todoList[index];
 
-        const index = todoList.findIndex(function (task) {
-            return task.id == id; 
-        });
+    $idInput.value = task.id;
+    $descriptionInput.value = task.description;
+    $priorityInput.value = task.priority;
+    $contactInput.value = task.contact;
+    $datelineInput.value = task.dateline;
+  } else {
+    $modeCreation.style.display = 'block';
+    $modeCreationBtn.style.display = 'block';
 
-        const task = todoList[index];
-
-        $idInput.value = task.id;
-        $descriptionInput.value = task.description;
-        $priorityInput.value = task.priority;
-        $contactInpu.value = task.contact;
-        $datelineInput.value = task.dateline;
-
-    } else {
-        $modeCreation.style.display = "block";
-        $modeCreationBtn.style.display = "block";
-
-        $modeEdition.style.display = 'none';
-        $modeEditionBtn.style.display = 'none';
-    }
-
+    $modeEdition.style.display = 'none';
+    $modeEditionBtn.style.display = 'none';
+  }
 }
 
 // Função para fechar a caixa da nova tarefa
-function closeModal () {
-    $modal.style.display = "none";
+function closeModal() {
+  $modal.style.display = 'none';
 
-    //Limpando os input quando o modal for fechado
-    $idInput.value = "";
-    $descriptionInput.value = "";
-    $priorityInput.value = "";
-    $contactInput.value = "";
-    $datelineInput.value = "";
+  // Limpando os inputs quando o modal for fechado
+  $idInput.value = '';
+  $descriptionInput.value = '';
+  $priorityInput.value = '';
+  $contactInput.value = '';
+  $datelineInput.value = '';
 }
-
 
 // Função para adicionar novos cards com os valores do Array
 function generateCards() {
-    const todoListHtml = todoList.map(function(task) {
+  const todoListHtml = todoList.map(function (task) {
     const formatarData = moment(task.dateline).format('DD/MM/YYYY');
-        return `
-            <div class="card" ondblclick="openModal(${task.id})">
-                <div class="info">
-                    <b>Descrição:</b>
-                    <span>${task.description}</span>
-                </div>
 
-                <div class="info">
-                    <b>Prioridade:</b>
-                    <span>${task.priority}</span>
-                </div>
+    return `
+      <div class="card" ondblclick="openModal(${task.id})">
+        <div class="info">
+          <b>Descrição:</b>
+          <span>${task.description}</span>
+        </div>
 
-                <div class="info">
-                    <b>Contato:</b>
-                    <span>${task.contact}</span>
-                </div>
+        <div class="info">
+          <b>Prioridade:</b>
+          <span>${task.priority}</span>
+        </div>
 
-                <div class="info">
-                    <b>Prazo:</b>
-                    <span>${formatarData}</span>
-                </div>
-            </div>
-        `;
-    });
+        <div class="info">
+          <b>Contato:</b>
+          <span>${task.contact}</span>
+        </div>
 
-    $todoColumnBody.innerHTML = todoListHtml.join(''); 
+        <div class="info">
+          <b>Prazo:</b>
+          <span>${formatarData}</span>
+        </div>
+      </div>
+    `;
+  });
+
+  $todoColumnBody.innerHTML = todoListHtml.join('');
 }
 
 // Função para armazenar os objetos do array
-function createTask() { 
+function createTask() {
+  const newTask = {
+    id: Math.floor(Math.random() * 9999999),
+    description: $descriptionInput.value,
+    priority: $priorityInput.value,
+    contact: $contactInput.value,
+    dateline: $datelineInput.value,
+  };
 
-    const newTask = {
-        id: Math.floor(Math,radom() * 9999999), // Id aleatorio para cada task gerada
-        description: $descriptionInput.value,
-        priority: $priorityInput.value,
-        contact: $contactInput.value,
-        dateline: $datelineInput.value,
-    }
+  todoList.push(newTask);
+  closeModal();
+  generateCards();
+}
 
-        todoList.push(newTask)
+function updateTask() {
+  const task = {
+    id: $idInput.value,
+    description: $descriptionInput.value,
+    priority: $priorityInput.value,
+    contact: $contactInput.value,
+    dateline: $datelineInput.value,
+  };
+
+  const index = todoList.findIndex(function (task) {
+    return task.id == $idInput.value;
+  });
+
+  todoList[index] = task;
+  closeModal();
+  generateCards();
+}
+
+// Função para adicionar uma nova coluna
+function addNewColumn() {
+    const container = document.querySelector('.container');
+    const rows = document.querySelectorAll('.row');
+    let currentRow = rows[rows.length - 1]; // Última linha atual
   
-        closeModal();
-        generateCards();
-}
-
-
-function updateTask() { 
-    const task = {
-        id: $idInput.value,
-        description: $descriptionInput.value,
-        priority: $priorityInput.value,
-        contact: $contactInput.value,
-        dateline: $datelineInput.value,
+    if (!currentRow || currentRow.childElementCount === 4) {
+      // Se não houver nenhuma linha atual ou se a linha atual já tiver 4 colunas
+      const newRow = document.createElement('div');
+      newRow.classList.add('row');
+      container.appendChild(newRow);
+      currentRow = newRow; // Atualiza a referência para a nova linha
     }
-
-    const index = todoList.findIndex(function (task) {
-        return task.id == $idInput.value;
-    });
-
-    todoList[index] = task;
-
-    closeModal();
-    generateCards();
+  
+    const newColumnId = Date.now(); // Gerar ID único para a nova coluna
+  
+    const newColumn = document.createElement('div');
+    newColumn.classList.add('column');
+    newColumn.id = `column-${newColumnId}`; // Definir o ID da coluna
+    newColumn.innerHTML = `
+        <div class="column-header">
+            <span>Nova Coluna</span>
+            <div class="btn-header-column">
+                <button>
+                    <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                </button>
+                <button onclick="openModal()">
+                    <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                </button>
+                <button>
+                    <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Corpo das colunas -->
+        <div class="column-body"></div>
+    `;
+  
+    currentRow.insertBefore(newColumn, currentRow.firstChild); // Insere a nova coluna no começo da linha
+  
+    addColumnEvents(newColumn); // Adiciona os eventos à nova coluna
+    generateCards(); // Atualiza os cards exibidos
 }
+  
+
+// Função para adicionar o evento de exclusão às colunas
+function addEditColumnNameEvent(column) {
+    const editIcon = column.querySelector('#edit-column-title');
+    const columnName = column.querySelector('.column-header span');
+  
+    editIcon.addEventListener('click', function () {
+    const input = document.createElement('input');
+    input.value = columnName.textContent;
+    input.classList.add('edit-input');
+    input.style.background = 'transparent';
+    input.style.borderBottom = '1px solid white';
+  
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          columnName.textContent = input.value;
+          column.querySelector('.column-header').removeChild(input);
+          columnName.style.display = ''; // Restaura a exibição do nome da coluna
+        }
+      });
+      
+      columnName.style.display = 'none'; // Esconde o nome original da coluna
+      column.querySelector('.column-header').insertBefore(input, columnName); // Insere o input antes do elemento columnName
+      input.focus();
+    });
+  }
+  
+// Função para adicionar o evento de exclusão às colunas
+function addDeleteColumnEvent(column) {
+    const deleteIcon = column.querySelector('#delete-column');
+    deleteIcon.addEventListener('click', function () {
+      const shouldDelete = confirm('Tem certeza que deseja remover a coluna?');
+      if (shouldDelete) {
+        column.remove();
+      }
+    });
+  }
+
+// Função para adicionar os eventos à nova coluna
+function addColumnEvents(column) {
+    addDeleteColumnEvent(column);
+    addEditColumnNameEvent(column);
+  }
+
+// Evento de carregamento do DOM para adicionar manipulador de eventos de exclusão às colunas existentes
+document.addEventListener('DOMContentLoaded', function () {
+  const columns = document.querySelectorAll('.column');
+  columns.forEach(function (column) {
+    addColumnEvents(column);
+  });
+}); 

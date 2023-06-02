@@ -17,7 +17,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
 
     <!-- Script da momentJs para formatar as datas-->
-    <script src="/moment.mim.js" defer></script>
+    <script src="./moment.mim.js" defer></script>
 
     <!-- Script principal -->
     <script src="script.js" defer></script>
@@ -30,19 +30,96 @@
     <div class="header">
         <img src="/Imagens/logo-front.png" alt="LogoTipo Empresa">
         <h1>Quadro Kanban</h1>
-        <button class="bottons-page">Nova coluna</button>
+        <button class="bottons-page" onclick="addNewColumn()">Nova coluna</button>
     </div>
 
     <!-- Colunas -->
     <div class="container">
+        
+        <div class="row">       
+        
+            <!-- Coluna 1-->
+            <div class="column" id="todoColumn">
 
-        <!-- Coluna 1-->
-        <div class="column" id="todoColumn">
+                <!-- Cabeçalho das colunas -->
+                <div class="column-header">
+                <span class="column-name">A fazer</span>
+                    <div class="btn-header-column">
+                        <button>
+                            <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                        </button>
+                        <button onclick="openModal()">
+                            <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                        </button>
+                        <button>
+                            <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Corpo das colunas -->
+                <div class="column-body">
 
-            <!-- Cabeçalho das colunas -->
-            <div class="column-header">
-                <span>A fazer</span>
-                <div class="btn-header-column">
+                </div>
+            </div>
+
+            <!-- Coluna 2-->
+            <div class="column">
+
+                <!-- Cabeçalho das colunas -->
+                <div class="column-header">
+                <span class="column-name">Em progresso</span>
+                    <div class="btn-header-column">
+                        <button>
+                            <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                        </button>
+                        <button onclick="openModal()">
+                            <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                        </button>
+                        <button>
+                            <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+        
+                <!-- Corpo das colunas -->
+                <div class="column-body">
+
+                </div>
+            </div>
+
+            <!-- Coluna 3-->
+            <div class="column">
+
+                <!-- Cabeçalho das colunas -->
+                <div class="column-header">
+                <span class="column-name">Analise</span>
+                    <div class="btn-header-column">
+                        <button>
+                            <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+                        </button>
+                        <button onclick="openModal()">
+                            <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+                        </button>
+                        <button>
+                            <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+        
+                <!-- Corpo das colunas -->
+                <div class="column-body">
+
+                </div>
+            </div>
+
+            <!-- Coluna 4-->
+            <div class="column">
+
+                <!-- Cabeçalho das colunas -->
+                <div class="column-header">
+                <span class="column-name">Concluido</span>
+                    <div class="btn-header-column">
                     <button>
                         <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
                     </button>
@@ -54,86 +131,13 @@
                     </button>
                 </div>
             </div>
-            
+        
             <!-- Corpo das colunas -->
             <div class="column-body">
 
             </div>
         </div>
 
-        <!-- Coluna 2-->
-        <div class="column">
-
-            <!-- Cabeçalho das colunas -->
-            <div class="column-header">
-                <span>Em progresso</span>
-                <div class="btn-header-column">
-                    <button>
-                        <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
-                    </button>
-                    <button onclick="openModal()">
-                        <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
-                    </button>
-                    <button>
-                        <ion-icon id="delete-column" name="trash-outline"></ion-icon>
-                    </button>
-                </div>
-            </div>
-                
-            <!-- Corpo das colunas -->
-            <div class="column-body">
-    
-            </div>
-        </div>
-
-        <!-- Coluna 3-->
-        <div class="column">
-
-            <!-- Cabeçalho das colunas -->
-            <div class="column-header">
-                <span>Analise</span>
-                <div class="btn-header-column">
-                    <button>
-                        <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
-                    </button>
-                    <button onclick="openModal()">
-                        <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
-                    </button>
-                    <button>
-                        <ion-icon id="delete-column" name="trash-outline"></ion-icon>
-                    </button>
-                </div>
-            </div>
-                
-            <!-- Corpo das colunas -->
-            <div class="column-body">
-    
-            </div>
-        </div>
-
-        <!-- Coluna 4-->
-        <div class="column">
-
-            <!-- Cabeçalho das colunas -->
-            <div class="column-header">
-                <span>Concluido</span>
-                <div class="btn-header-column">
-                    <button>
-                        <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
-                    </button>
-                    <button onclick="openModal()">
-                        <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
-                    </button>
-                    <button>
-                        <ion-icon id="delete-column" name="trash-outline"></ion-icon>
-                    </button>
-                </div>
-            </div>
-                
-            <!-- Corpo das colunas -->
-            <div class="column-body">
-    
-            </div>
         </div>
     </div>
 
@@ -179,9 +183,8 @@
                     <input type="date" id="dateline">
                 </div>
 
-                <button class="bottons-page" onclick="createTask()" id="modeEditionBtn">Adiconar tarefa</button>
-                <button class="bottons-page" onclick="updateTask()" id="modeCreationBtn">Salvar alterações</button>
-
+                <button class="bottons-page" onclick="createTask()" id="modeCreationBtn">Adiconar tarefa</button>
+                <button class="bottons-page" onclick="updateTask()" id="modeEditionBtn">Salvar alterações</button>
             </div>
 
         </div>
