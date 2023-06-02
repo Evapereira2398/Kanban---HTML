@@ -5,8 +5,6 @@ const $contactInput = document.getElementById('contact');
 const $datelineInput = document.getElementById('dateline');
 const $idInput = document.getElementById('idInput');
 
-const $todoColumnBody = document.querySelector('#todoColumn .column-body');
-
 const $modeEdition = document.getElementById('modeEdition');
 const $modeCreation = document.getElementById('modeCreation');
 
@@ -16,7 +14,7 @@ const $modeCreationBtn = document.getElementById('modeCreationBtn');
 var todoList = [];
 
 // Função para adicionar abrir a caixa da nova tarefa
-function openModal(id) {
+function openModal(id, columnId) {
   $modal.style.display = 'flex';
 
   // Condição para identificar se a caixa está recebendo um ID...
@@ -49,6 +47,9 @@ function openModal(id) {
     $modeEdition.style.display = 'none';
     $modeEditionBtn.style.display = 'none';
   }
+
+  // Armazena o ID da coluna no elemento modal
+  $modal.dataset.columnId = columnId;
 }
 
 // Função para fechar a caixa da nova tarefa
@@ -65,161 +66,177 @@ function closeModal() {
 
 // Função para adicionar novos cards com os valores do Array
 function generateCards() {
-  const todoListHtml = todoList.map(function (task) {
-    const formatarData = moment(task.dateline).format('DD/MM/YYYY');
-
-    return `
-      <div class="card" ondblclick="openModal(${task.id})">
-        <div class="info">
-          <b>Descrição:</b>
-          <span>${task.description}</span>
-        </div>
-
-        <div class="info">
-          <b>Prioridade:</b>
-          <span>${task.priority}</span>
-        </div>
-
-        <div class="info">
-          <b>Contato:</b>
-          <span>${task.contact}</span>
-        </div>
-
-        <div class="info">
-          <b>Prazo:</b>
-          <span>${formatarData}</span>
-        </div>
-      </div>
-    `;
-  });
-
-  $todoColumnBody.innerHTML = todoListHtml.join('');
-}
+    const columns = document.querySelectorAll('.column');
+    columns.forEach(function (column) {
+      const columnId = column.id.replace('column-', ''); // Obtém o ID da coluna atual
+  
+      const columnBody = column.querySelector('.column-body');
+      if (!columnBody) return; // Verifica se o corpo da coluna existe antes de prosseguir
+  
+      const todoListHtml = todoList
+        .filter(function (task) {
+          return task.columnId == columnId; // Filtra as tarefas pelo ID da coluna
+        })
+        .map(function (task) {
+          const formatarData = moment(task.dateline).format('DD/MM/YYYY');
+  
+          return `
+            <div class="card" ondblclick="openModal(${task.id}, ${task.columnId})">
+              <div class="info">
+                <b>Descrição:</b>
+                <span>${task.description}</span>
+              </div>
+  
+              <div class="info">
+                <b>Prioridade:</b>
+                <span>${task.priority}</span>
+              </div>
+  
+              <div class="info">
+                <b>Contato:</b>
+                <span>${task.contact}</span>
+              </div>
+  
+              <div class="info">
+                <b>Prazo:</b>
+                <span>${formatarData}</span>
+              </div>
+            </div>
+          `;
+        });
+  
+      columnBody.innerHTML = todoListHtml.join('');
+    });
+  }
 
 // Função para armazenar os objetos do array
 function createTask() {
-  const newTask = {
-    id: Math.floor(Math.random() * 9999999),
-    description: $descriptionInput.value,
-    priority: $priorityInput.value,
-    contact: $contactInput.value,
-    dateline: $datelineInput.value,
-  };
+    const columnId = $modal.dataset.columnId; // Obtém o ID da coluna atualmente selecionada no modal
+  
+    const newTask = {
+      id: Math.floor(Math.random() * 9999999),
+      columnId: parseInt(columnId),
+      description: $descriptionInput.value,
+      priority: $priorityInput.value,
+      contact: $contactInput.value,
+      dateline: $datelineInput.value,
+    };
+  
+    todoList.push(newTask);
+    closeModal();
+    generateCards(); // Atualiza os cards exibidos em todas as colunas
+  }
 
-  todoList.push(newTask);
-  closeModal();
-  generateCards();
-}
-
+// Função para editar os cards adicionados  
 function updateTask() {
-  const task = {
-    id: $idInput.value,
-    description: $descriptionInput.value,
-    priority: $priorityInput.value,
-    contact: $contactInput.value,
-    dateline: $datelineInput.value,
-  };
-
-  const index = todoList.findIndex(function (task) {
-    return task.id == $idInput.value;
-  });
-
-  todoList[index] = task;
-  closeModal();
-  generateCards();
+    const columnId = $modal.dataset.columnId; // Obtém o ID da coluna atualmente selecionada no modal
+  
+    const task = {
+      id: $idInput.value,
+      columnId: parseInt(columnId),
+      description: $descriptionInput.value,
+      priority: $priorityInput.value,
+      contact: $contactInput.value,
+      dateline: $datelineInput.value,
+    };
+  
+    const index = todoList.findIndex(function (task) {
+      return task.id == $idInput.value;
+    });
+  
+    todoList[index] = task;
+    closeModal();
+    generateCards(); // Atualiza os cards exibidos em todas as colunas
 }
 
 // Função para adicionar uma nova coluna
 function addNewColumn() {
-    const container = document.querySelector('.container');
-    const rows = document.querySelectorAll('.row');
-    let currentRow = rows[rows.length - 1]; // Última linha atual
-  
-    if (!currentRow || currentRow.childElementCount === 4) {
-      // Se não houver nenhuma linha atual ou se a linha atual já tiver 4 colunas
-      const newRow = document.createElement('div');
-      newRow.classList.add('row');
-      container.appendChild(newRow);
-      currentRow = newRow; // Atualiza a referência para a nova linha
-    }
-  
-    const newColumnId = Date.now(); // Gerar ID único para a nova coluna
-  
-    const newColumn = document.createElement('div');
-    newColumn.classList.add('column');
-    newColumn.id = `column-${newColumnId}`; // Definir o ID da coluna
-    newColumn.innerHTML = `
-        <div class="column-header">
-            <span>Nova Coluna</span>
-            <div class="btn-header-column">
-                <button>
-                    <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
-                </button>
-                <button onclick="openModal()">
-                    <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
-                </button>
-                <button>
-                    <ion-icon id="delete-column" name="trash-outline"></ion-icon>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Corpo das colunas -->
-        <div class="column-body"></div>
-    `;
-  
-    currentRow.insertBefore(newColumn, currentRow.firstChild); // Insere a nova coluna no começo da linha
-  
-    addColumnEvents(newColumn); // Adiciona os eventos à nova coluna
-    generateCards(); // Atualiza os cards exibidos
+  const container = document.querySelector('.container');
+  const rows = document.querySelectorAll('.row');
+  let currentRow = rows[rows.length - 1]; // Última linha atual
+
+  if (!currentRow || currentRow.childElementCount === 4) {
+    // Se não houver nenhuma linha atual ou se a linha atual já tiver 4 colunas
+    const newRow = document.createElement('div');
+    newRow.classList.add('row');
+    container.appendChild(newRow);
+    currentRow = newRow; // Atualiza a referência para a nova linha
+  }
+
+  const newColumnId = Date.now(); // Gerar ID único para a nova coluna
+
+  const newColumn = document.createElement('div');
+  newColumn.classList.add('column');
+  newColumn.id = `column-${newColumnId}`; // Definir o ID da coluna
+  newColumn.innerHTML = `
+    <div class="column-header">
+      <span>Nova Coluna</span>
+      <div class="btn-header-column">
+        <button>
+          <ion-icon id="edit-column-title" name="create-outline"></ion-icon>
+        </button>
+        <button onclick="openModal(null, ${newColumnId})">
+          <ion-icon id="add-tarefa" name="add-outline"></ion-icon>
+        </button>
+        <button>
+          <ion-icon id="delete-column" name="trash-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Corpo das colunas -->
+    <div class="column-body"></div>
+  `;
+
+  currentRow.insertBefore(newColumn, currentRow.firstChild); // Insere a nova coluna no começo da linha
+
+  addColumnEvents(newColumn); // Adiciona os eventos à nova coluna
+  generateCards(newColumnId); // Atualiza os cards exibidos
 }
-  
 
 // Função para adicionar o evento de exclusão às colunas
 function addEditColumnNameEvent(column) {
-    const editIcon = column.querySelector('#edit-column-title');
-    const columnName = column.querySelector('.column-header span');
-  
-    editIcon.addEventListener('click', function () {
+  const editIcon = column.querySelector('#edit-column-title');
+  const columnName = column.querySelector('.column-header span');
+
+  editIcon.addEventListener('click', function () {
     const input = document.createElement('input');
     input.value = columnName.textContent;
     input.classList.add('edit-input');
     input.style.background = '#FFF';
-    input.style.border = 'none'
-    
-    input.style.boxshadow = 'inset 2px 5px 10px rgba(0,0,0,0.3)'
-    
-  
-      input.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-          columnName.textContent = input.value;
-          column.querySelector('.column-header').removeChild(input);
-          columnName.style.display = ''; // Restaura a exibição do nome da coluna
-        }
-      });
-      
-      columnName.style.display = 'none'; // Esconde o nome original da coluna
-      column.querySelector('.column-header').insertBefore(input, columnName); // Insere o input antes do elemento columnName
-      input.focus();
-    });
-  }
-  
-// Função para adicionar o evento de exclusão às colunas
-function addDeleteColumnEvent(column) {
-    const deleteIcon = column.querySelector('#delete-column');
-    deleteIcon.addEventListener('click', function () {
-      const shouldDelete = confirm('Tem certeza que deseja remover a coluna?');
-      if (shouldDelete) {
-        column.remove();
+    input.style.border = 'none';
+    input.style.boxshadow = 'inset 2px 5px 10px rgba(0,0,0,0.3)';
+
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        columnName.textContent = input.value;
+        column.querySelector('.column-header').removeChild(input);
+        columnName.style.display = ''; // Restaura a exibição do nome da coluna
       }
     });
-  }
+
+    columnName.style.display = 'none'; // Esconde o nome original da coluna
+    column.querySelector('.column-header').insertBefore(input, columnName); // Insere o input antes do elemento columnName
+    input.focus();
+  });
+}
+
+// Função para adicionar o evento de exclusão às colunas
+function addDeleteColumnEvent(column) {
+  const deleteIcon = column.querySelector('#delete-column');
+  deleteIcon.addEventListener('click', function () {
+    const shouldDelete = confirm('Tem certeza que deseja remover a coluna?');
+    if (shouldDelete) {
+      column.remove();
+    }
+  });
+}
 
 // Função para adicionar os eventos à nova coluna
 function addColumnEvents(column) {
-    addDeleteColumnEvent(column);
-    addEditColumnNameEvent(column);
-  }
+  addDeleteColumnEvent(column);
+  addEditColumnNameEvent(column);
+}
 
 // Evento de carregamento do DOM para adicionar manipulador de eventos de exclusão às colunas existentes
 document.addEventListener('DOMContentLoaded', function () {
@@ -227,4 +244,4 @@ document.addEventListener('DOMContentLoaded', function () {
   columns.forEach(function (column) {
     addColumnEvents(column);
   });
-}); 
+});
