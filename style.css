@@ -234,3 +234,8 @@ button.bottons-page {
     margin-left: auto;
     margin-top: 15px;
 }
+
+.column.dragover {
+   outline: none;
+  }
+  
