@@ -71,67 +71,48 @@ function closeModal() {
 
 // Função para adicionar novos cards com os valores do Array
 function generateCards() {
-  const columns = document.querySelectorAll('.column');
-  columns.forEach(function (column) {
-    const columnId = column.id.replace('column-', ''); // Obtém o ID da coluna atual
-
-    const columnBody = column.querySelector('.column-body');
-    if (!columnBody) return; // Verifica se o corpo da coluna existe antes de prosseguir
-
-    const todoListHtml = todoList
-      .filter(function (task) {
-        return task.columnId == columnId; // Filtra as tarefas pelo ID da coluna
-      })
-      .map(function (task) {
-        const formatarData = moment(task.dateline).format('DD/MM/YYYY');
-
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.draggable = true; // Torna o card arrastável
-        card.dataset.taskId = task.id; // Define o ID da tarefa no card
-
-        // Define os eventos de arrastar e soltar
-        card.addEventListener('dragstart', function (event) {
-          event.dataTransfer.setData('text/plain', card.id);
+    const columns = document.querySelectorAll('.column');
+    columns.forEach(function (column) {
+      const columnId = column.id.replace('column-', ''); // Obtém o ID da coluna atual
+  
+      const columnBody = column.querySelector('.column-body');
+      if (!columnBody) return; // Verifica se o corpo da coluna existe antes de prosseguir
+  
+      const todoListHtml = todoList
+        .filter(function (task) {
+          return task.columnId == columnId; // Filtra as tarefas pelo ID da coluna
+        })
+        .map(function (task) {
+          const formatarData = moment(task.dateline).format('DD/MM/YYYY');
+  
+          return `
+            <div class="card" ondblclick="openModal(${task.id}, ${task.columnId})">
+              <div class="info">
+                <b>Descrição:</b>
+                <span>${task.description}</span>
+              </div>
+  
+              <div class="info">
+                <b>Prioridade:</b>
+                <span>${task.priority}</span>
+              </div>
+  
+              <div class="info">
+                <b>Contato:</b>
+                <span>${task.contact}</span>
+              </div>
+  
+              <div class="info">
+                <b>Prazo:</b>
+                <span>${formatarData}</span>
+              </div>
+            </div>
+          `;
         });
-
-        card.addEventListener('dragend', function (event) {
-          // Limpe qualquer estilo de destaque quando o card é arrastado e solto
-          const columns = document.querySelectorAll('.column');
-          columns.forEach(function (column) {
-            column.classList.remove('dragover');
-          });
-        });
-
-        card.innerHTML = `
-          <div class="info">
-            <b>Descrição:</b>
-            <span>${task.description}</span>
-          </div>
-
-          <div class="info">
-            <b>Prioridade:</b>
-            <span>${task.priority}</span>
-          </div>
-
-          <div class="info">
-            <b>Contato:</b>
-            <span>${task.contact}</span>
-          </div>
-
-          <div class="info">
-            <b>Prazo:</b>
-            <span>${formatarData}</span>
-          </div>
-        `;
-
-        return card.outerHTML;
-      });
-
-    columnBody.innerHTML = todoListHtml.join('');
-  });
-}
-
+  
+      columnBody.innerHTML = todoListHtml.join('');
+    });
+  }
 
 // Função para armazenar os objetos do array
 function createTask() {
@@ -174,6 +155,7 @@ function updateTask() {
 }
 
 // Função para adicionar uma nova coluna
+// Função para adicionar uma nova coluna
 function addNewColumn() {
   const container = document.querySelector('.container');
   const rows = document.querySelectorAll('.row');
@@ -215,7 +197,6 @@ function addNewColumn() {
   currentRow.appendChild(newColumn); // Insere a nova coluna no final da linha
 
   addColumnEvents(newColumn); // Adiciona os eventos à nova coluna
-  addColumnDragDropEvents(newColumn); // Adiciona os eventos de arrastar e soltar à nova coluna
   generateCards(newColumnId); // Atualiza os cards exibidos
 
   const content = document.querySelector('.content');
@@ -229,7 +210,7 @@ function addNewColumn() {
 }
 
 
-// Função para editar o nome das colunas
+// Função para adicionar o evento de exclusão às colunas
 function addEditColumnNameEvent(column) {
   const editIcon = column.querySelector('#edit-column-title');
   const columnName = column.querySelector('.column-header span');
@@ -258,7 +239,7 @@ function addEditColumnNameEvent(column) {
   });
 }
 
-// Função para exclusão às colunas
+// Função para adicionar o evento de exclusão às colunas
 function addDeleteColumnEvent(column) {
   const deleteIcon = column.querySelector('#delete-column');
   deleteIcon.addEventListener('click', function () {
@@ -268,35 +249,6 @@ function addDeleteColumnEvent(column) {
     }
   });
 }
-
-
-
-function addColumnDragDropEvents(column) {
-  column.addEventListener('dragover', function (event) {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
-    column.classList.add('dragover'); // Adiciona uma classe para destacar a coluna quando um card é arrastado sobre ela
-  });
-
-  column.addEventListener('dragleave', function (event) {
-    column.classList.remove('dragover'); // Remove a classe quando o card deixa de estar sobre a coluna
-  });
-
-  column.addEventListener('drop', function (event) {
-    event.preventDefault();
-    const cardId = event.dataTransfer.getData('text/plain');
-    const card = document.getElementById(cardId);
-    const newColumnId = column.id.replace('column-', '');
-    const cardData = todoList.find(function (task) {
-      return task.id == card.dataset.taskId;
-    });
-
-    cardData.columnId = parseInt(newColumnId);
-    generateCards();
-    column.classList.remove('dragover'); // Remove a classe de destaque da coluna após soltar o card
-  });
-}
-
 
 // Função para adicionar os eventos à nova coluna
 function addColumnEvents(column) {
