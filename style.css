@@ -31,12 +31,13 @@ body::-webkit-scrollbar-thumb {
     justify-content: space-between;
     align-items: center;
     padding: 30px;
-    height: 110px;
+    height: 120px;
 }
 
 .header img {
     width: 100px;
     height: 100px;
+    cursor: pointer;
 }
 
 .header h1 {
@@ -54,6 +55,20 @@ button.bottons-page {
     cursor: pointer;
 }
 
+.content img {
+    width: 800px;
+    height: auto;
+    padding: 10px;
+    margin-left: 28%;
+}
+
+.content h1, h2 {
+    text-align: center;
+    padding: 15px;
+    color: var(--text-color);
+    font-size: 28px;
+}
+
 .row {
     display: flex;
     flex-wrap: wrap;
@@ -61,19 +76,6 @@ button.bottons-page {
     justify-content: center;
     align-items: center;    
     padding: 20px 0;
-}
-
-.container .row .content img {
-    width: 800px;
-    height: auto;
-    padding: 10px;
-}
-
-.container .row .content h1, h2 {
-    text-align: center;
-    padding: 15px;
-    color: var(--text-color);
-    font-size: 28px;
 }
 
 .container .column {
